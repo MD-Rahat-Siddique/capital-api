@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country</title>
+
+    <style>
+        h1 {
+            color: green;
+            font-size: 50px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        button {
+            font-size: 25px;
+            background-color: rgb(224, 10, 10);
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 10px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            width: 500px;
+        }
+
+        .search-bar {
+            margin: 50px;
+        }
+        .display-center{
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            width: 300px;
+            padding: 20px;
+            box-shadow: 10px 10px 20px #ddd;
+            height: 390px;
+        }
+        table tr{
+            width: 100%;
+        }
+        table tr td{
+            text-align: left;
+            margin: 10px;
+        }
+        p{
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="search-bar display-center">
+            <input id="input" type="text">
+            <button id="search-btn">Search</button>
+        </div>
+    </section>
+
+    <section>
+        <div class="display-center">
+            <div class="container">
+                <h1>Result : </h1>
+                <table>
+                    <tr>
+                        <td><h2>Capital</h2></td>
+                        <td>:</td>
+                        <td><span id="capital"></span></td>
+                    </tr>
+                    <tr>
+                        <td><h4>Area</h4></td>
+                        <td> : </td>
+                        <td><span id="area"></span> </td>
+                    </tr>
+                    <tr>
+                        <td><h4>Continents</h4></td>
+                        <td> : </td>
+                        <td><span id="continents"></span></td>
+                    </tr>
+                </table>
+                <p id="error-msg"></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const capital = document.getElementById('capital');
+        const area = document.getElementById('area');
+        const continent = document.getElementById('continents');
+        const errorHandle = document.getElementById('error-msg');
+        const input = document.getElementById('input');
+        document.getElementById('search-btn').addEventListener('click', function () {
+            fetch('https://restcountries.com/v3.1/name/' + input.value + '?fullText=true')
+                .then(res => res.json())
+                .then(data => {
+                    const capitalName = data[0].capital[0];
+                    capital.innerText = capitalName;
+
+                    const totalArea = data[0].area;
+                    area.innerText = totalArea + ' Square Feet';
+
+                    const continentName = data[0].region;
+                    continent.innerText = continentName;
+                })
+                .catch(error => {
+                    errorHandle.innerText = error;
+                })
+            errorHandle.innerText = '';
+        });
+
+
+    </script>
+</body>
+
+</html>
